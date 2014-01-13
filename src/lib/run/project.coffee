@@ -10,7 +10,7 @@ PColl = require("pcoll")
 Promise = require("bluebird")
 Str = require("underscore.string")
 $ = require("gee-shell")
-tap = require("../common/tap")
+tap = require("gulp-tap")
 
 FILTERS = "filters"
 FUNCTIONS = "functions"
