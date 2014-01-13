@@ -5,19 +5,14 @@
   "license": "MIT",
   "version": "0.1.0",
   "dependencies": {
-    "gee-shell": "0.1.0-pre",
-    "async": "~0.2.0",
     "chokidar": "~0.8.1",
     "coffee-script": "~1.6.1",
+    "connect": "~2.12.0",
     "lodash": "~2.4.1",
     "minimatch": "~0.2.11",
     "mkdirp": "~0.3.3",
     "underscore.string": "~2.3.1",
-    "connect": "~2.7.3",
-    "read": "~1.0.4",
-    "sandbox": "~0.8.3",
     "temp": "~0.5.0",
-    "glob": "~3.2.8",
     "minilog": "~2.0.3",
     "minimist": "0.0.5",
     "cson": "~1.4.5",
@@ -27,16 +22,16 @@
     "bluebird": "~0.11.6-0",
     "findup-sync": "~0.1.2",
     "pcoll": "~0.1.0",
-    "string": "git://github.com/mgutz/string.js#shelljs-incompat",
-    "gulp-tap": "~0.1.0"
+    "gulp-tap": "~0.1.1"
   },
   "devDependencies": {
-    "chai": "~1.5.0",
-    "mocha": "~1.8.1",
+    "chai": "~1.8.1",
+    "mocha": "~1.17.0",
     "gulp-coffee": "~1.2.5",
     "gulp-less": "~1.1.7",
     "gulp": "~3.3.1",
-    "gulp-uglify": "~0.1.0"
+    "gulp-uglify": "~0.1.0",
+    "gee-shell": "0.1.0-pre"
   },
   "optionalDependencies": {},
   "engines": {

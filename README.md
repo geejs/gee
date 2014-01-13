@@ -43,14 +43,7 @@ CoffeeScript example, [example/simple.coffee](example/simple.coffee)
 JavaScript example
 
 ```js
-var Path = require('path');
-var Promise = require('bluebird');
-var coffee = require('gulp-coffee');
-var dest = require('gulp').dest;
-var uglify = require('gulp-uglify');
-
 exports.project = function(gee) {
-  var $ = gee.$;
   var argv = gee.argv;
   var tap = gee.tap;
 

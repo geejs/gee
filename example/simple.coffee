@@ -3,9 +3,10 @@ Promise = require("bluebird")
 coffee = require("gulp-coffee")
 dest = require("gulp").dest
 uglify = require("gulp-uglify")
+$ = require("gee-shell")
 
 exports.project = (gee) ->
-  {$, argv, tap} = gee
+  {argv, tap} = gee
 
   # tap into pipeline easily
   addHeader = ->

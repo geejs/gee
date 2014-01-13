@@ -3,9 +3,9 @@ var Promise = require('bluebird');
 var coffee = require('gulp-coffee');
 var dest = require('gulp').dest;
 var uglify = require('gulp-uglify');
+var $ = require('gee-shell');
 
 exports.project = function(gee) {
-  var $ = gee.$;
   var argv = gee.argv;
   var tap = gee.tap;
 

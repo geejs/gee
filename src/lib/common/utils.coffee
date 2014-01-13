@@ -1,8 +1,7 @@
 Fs = require("fs")
 Path = require("path")
 Buffer = require('buffer').Buffer
-$ = require("gee-shell")
-globEx = require("./globEx")
+#globEx = require("./globEx")
 
 # Get the encoding of a buffer (http://stackoverflow.com/questions/10225399/check-if-a-file-is-binary-or-ascii-with-node-js)
 getEncoding = (buffer) ->
@@ -25,7 +24,7 @@ getEncoding = (buffer) ->
 
 Utils =
 
-  glob: globEx
+  #glob: globEx
 
   # Finds string between strtToken and endToken
   #
@@ -145,9 +144,6 @@ Utils =
 
   escapeRegExp: (str) ->
     str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&")
-
-  relativeToHome: (path) ->
-    path.replace RegExp(Utils.escapeRegExp($.homeDir()), "i"), "~"
 
   relativeToCwd: (path) ->
     path.replace RegExp(Utils.escapeRegExp(process.cwd()), "i"), "."

@@ -1,9 +1,9 @@
-$ = require("projmate-shell")
-Async = require("async")
+#$ = require("projmate-shell") TODO this needs to use gee-shell
+#Async = require("async")
 Fs = require("fs")
 Path = require("path")
 Pkg = require("../../../package.json")
-S = require("string")
+#S = require("string") TODO this needs to use underscore.string
 Sandbox = require("sandbox")
 Temp = require("temp")
 Utils = require("../common/utils")

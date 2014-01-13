@@ -5,10 +5,12 @@ dest = require("gulp").dest
 less = require("gulp-less")
 uglify = require("gulp-uglify")
 Fs = require("fs")
+$ = require("gee-shell")
+
 
 
 exports.project = (gee) ->
-  {$, argv, tap} = gee
+  {argv, tap} = gee
 
   default: "clean"
 
@@ -24,4 +26,3 @@ exports.project = (gee) ->
         t.through(coffee, []) if Path.extname(file.path) == '.coffee'
       dest 'dist'
     ]
-

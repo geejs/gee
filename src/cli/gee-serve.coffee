@@ -33,7 +33,7 @@ main = ->
 ###
 exitUsage = ->
   console.log """
-  Usage: pm serve [dirname] [options]
+  Usage: gee serve [dirname] [options]
 
   Options
     -p,  --http-port <port>   HTTP port. Defaults to 1080.

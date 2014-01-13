@@ -3,7 +3,8 @@ Http = require("http")
 Https = require("https")
 Path = require("path")
 _ = require("lodash")
-Str = require("underscore.string")
+_.str = require("underscore.string")
+_.mixin(_.str.exports())
 connect = require("connect")
 log = require("../common/logger").getLogger("server")
 
@@ -60,9 +61,7 @@ exports.run = (options) ->
   if httpsPort != 443
     httpsDomain += ":" + httpsPort
 
-  dname = Str.chompLeft(dirname, process.cwd())
-  dname = Str.chompRight(dname, "/")
-  dname = Str.ensureLeft(dname, "/")
+  dname = _(dirname).__chompLeft(process.cwd()).__chompRight("/").__ensureLeft("/").value()
 
   dname = "/." if dname == "/"
   dname = "$PWD" + dname

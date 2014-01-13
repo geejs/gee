@@ -8,6 +8,9 @@ Logger = require("../common/logger")
 Promise = require("bluebird")
 Gulp = require("gulp")
 ifcond = require("../common/ifcond")
+ES = require("event-stream")
+
+FOOID = 0
 
 aliasTaskProps =
   description: ["des", "desc"]
@@ -53,7 +56,6 @@ class Task
     @files = definition.files
     @options = definition.options
     @watch = []
-
 
     # When watching a task with an aggregator all files must be processed.
     # For example, when compiling a CoffeeScript source file, the
@@ -377,13 +379,7 @@ class Task
       for pattern in patterns
         if minimatch(path, pattern)
           log.debug "#{path} #{action}"
-          Promise
-            .try(that.execute, [path], that)
-            .catch (err) ->
-              if err.stack
-                log.error err.stack
-              else
-                log.error err
+          that.execute(path, true)
 
     watcher.on "add", (path) -> checkExecute("added", path)
     watcher.on "change", _.debounce ((path) -> checkExecute("changed", path)), 300
@@ -416,23 +412,38 @@ class Task
 
   _executePipeline: (pipeline, mode=@mode) ->
     throw new Error("pipeline is not a function") unless _.isFunction(pipeline)
-
     vow = Promise.pending()
     log = @log
     last = null
     filters = _.compact(pipeline(mode))
+    that = @
+    rejected = false
+
 
     if filters.length > 0
+      start = Gulp.src(that.sources())
+      start.on "error", (err) ->
+        rejected = true
+        console.error err
+        vow.reject err
+
       filters.reduce (previous, filter) ->
+        filter.on "error", (err) ->
+          rejected = true
+          console.error err
+          vow.reject err
+
         previous.pipe filter
         last = filter
-      , Gulp.src(@sources())
+      , start
 
-      last.on "error", vow.callback
-      last.once "end", vow.callback
+      last.on "end", ->
+        if !rejected
+          vow.fulfill()
     else
       log.info "no filters to run in #{mode}"
       vow.fulfill()
+
     vow.promise
 
 
@@ -443,7 +454,7 @@ class Task
   #                          opposed to the runner, which calls execute without
   #                          a path.
   ###
-  execute: (filename) ->
+  execute: (filename) =>
     @changeset.push filename if filename?
 
     if not @watching and @ran
@@ -462,20 +473,26 @@ class Task
         return
 
     # the project writes a message when not watching, give some feedback when watching
-    startTime = Date.now()
-    logStatus = ->
-        ms = (Date.now() - startTime)
-        log.info if that.rebuild is "all" then "rebuilt all #{ms} ms" else "rebuilt #{filename} #{ms} ms"
+    logStatus = (promise) ->
+      startTime = Date.now()
+
+      # filename is set by watch listener, this logic is only when watching
+      if filename
+        promise.then ->
+          ms = (Date.now() - startTime)
+          log.info if that.rebuild is "all" then "rebuilt all #{ms} ms" else "rebuilt #{filename} #{ms} ms"
+        promise.catch (err) ->
+          # do nothing with it, error was printed in executePipeline
+        # promise.catch (err) ->
+        #   log.error if err.stack then err.stack else err
+
+      promise
 
     @ran = true
     if _.isFunction(@command)
-      @_executeFunction(@command)
-        .then ->
-          logStatus() if filename
+      logStatus @_executeFunction(@command)
     else if _.isFunction(@pipeline)
-      @_executePipeline(@pipeline)
-        .then ->
-          logStatus() if filename
+      logStatus @_executePipeline(@pipeline)
     else
       @log.error "Command is not a function or array pipeline", @__definition
 

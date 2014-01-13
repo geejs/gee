@@ -208,7 +208,10 @@ class Project
           else
             log.error err
         log.error "FAIL"
-      Promise.reject "PM_SILENT"
+
+      # exit if watching hasn't started yet
+      unless that.watching
+        Promise.reject "PM_SILENT"
 
 
   ###
@@ -236,15 +239,18 @@ class Project
       extname = Path.extname(filename)
 
       if [".cson .json .yaml"].indexOf(extname) >= 0
-        Project.loadJSON args...
+        Project.loadFile args...
       else
         mojule = require(filename)
         if _.isFunction(mojule.project)
           Project.loadModule mojule, args...
         else
-          Project.loadJSON args...
+          Project.loadFile args...
     catch e
-      console.error e
+      if e.stack
+        log.error e.stack
+      else
+        log.error e
       throw new Error("Could not load #{args[0]}", e)
 
 
@@ -271,7 +277,6 @@ class Project
         throw new Error("Unknown Projfile extension: #{projfilePath}")
 
     new Project(projfile, filename, argv, ns)
-
 
 
 module.exports = Project

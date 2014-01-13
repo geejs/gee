@@ -24,6 +24,7 @@ FormatMinilog.prototype.write = function(name, level, args) {
     pad = '                                        '.slice(0, maxName);
   }
   name = (name + pad).slice(0, maxName);
+  var isError = level === 'error';
 
   if (this.plain) {
     name = name ? name +' ' : '';
@@ -32,13 +33,15 @@ FormatMinilog.prototype.write = function(name, level, args) {
              return (typeof item == 'string' ? item : util.inspect(item, null, 3, true));
            }).join(' ');
   } else {
-    name = (name ? style(name +' ', level === 'error' ? 'red' : 'green') : '');
+    name = (name ? style(name +' ', isError ? 'red' : 'green') : '');
     level = (level ? style(levels[level], colors[level]) + ' ' : '');
     args = args.map(function(item) {
              return (typeof item == 'string' ? item : util.inspect(item, null, 3, true));
            }).join(' ');
   }
-  this.emit('item', name + level + this._indent + args + '\n');
+
+  var message = name + level + this._indent + args + '\n';
+  this.emit('item', message);
 };
 
 FormatMinilog.prototype.indent = function() {

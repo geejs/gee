@@ -6,9 +6,12 @@ Run = require("../lib/run")
 Utils = require("../lib/common/utils")
 log = Logger.getLogger("pm-run")
 Promise = require("bluebird")
-Str = require("underscore.string")
 findup = require("findup-sync")
 startCwd = process.cwd()
+
+_ = require("lodash")
+_.str = require("underscore.string")
+_.mixin(_.str.exports())
 
 if !process.env.NODE_ENV  or process.env.NODE_ENV == 'development'
   Promise.longStackTraces()
@@ -128,7 +131,7 @@ help = ->
     .then (descriptions) ->
       tasks = []
       for name, description of descriptions
-        tasks.push Str.sprintf("  %-#{24}s  #{description}", name)
+        tasks.push _.sprintf("  %-#{24}s  #{description}", name)
 
       console.log usage
       if tasks.length > 0
