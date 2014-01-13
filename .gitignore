@@ -1,0 +1,8 @@
+node_modules/
+
+# add these back in later when it is ported
+build/
+example-old/
+src/test/
+example/build/
+example/dist/
