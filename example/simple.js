@@ -11,8 +11,7 @@ exports.project = function(gee) {
 
   function addHeader() {
     return tap(function(file) {
-      var header;
-      header = '/*** YOUR HEADER */';
+      var header = '/*** YOUR HEADER */';
       file.contents = Buffer.concat([new Buffer(header), file.contents]);
     });
   };
@@ -28,11 +27,11 @@ exports.project = function(gee) {
     'default': 'clean async asyncPromise scripts',
 
     clean: function() {
-      return $.rm('-rf', 'build');
+      $.rm('-rf', 'build');
     },
 
     'clean@release': function() {
-      return $.rm('-rf', 'dist');
+      $.rm('-rf', 'dist');
     },
 
     scripts: {
@@ -57,8 +56,7 @@ exports.project = function(gee) {
     },
 
     asyncPromise: function() {
-      var vow;
-      vow = Promise.pending();
+      var vow = Promise.pending();
       process.nextTick(function() {
         console.log('promise');
         vow.fulfill();
