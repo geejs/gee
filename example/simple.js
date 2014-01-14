@@ -11,6 +11,7 @@ exports.project = function(gee) {
   var strtap = gee.strtap;
 
   function addHeader() {
+    /* use strtap to change a file using strings, return true to update */
     return strtap(function(file) {
       var header = '/*** YOUR HEADER */';
       file.contents = header + '\n' + file.contents;
