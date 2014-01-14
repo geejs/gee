@@ -1,26 +1,21 @@
 # gee
 
-A simpler build system built on [gulp](https://github.com/gulpjs/gulp) filters.
+Simpler builds using [gulp](https://github.com/gulpjs/gulp) filters.
 
 
 ## Motivation
 
 Lots of build systems out there. Grunt, Gulp ... too low level. What you get
 
-*   Uses Gulp filters
-*   Builds modes - Reuse source globs in test, release builds
-*   Watch is built in
-*   Efficient rebuilding on watch, can process send single file
-*   Useful help screen
-*   Serve files locally with http and https w/ valid cert
-
-    Useful for testing your project, plugins for cross-site issues
-
-*   Use `tap` for simple tasks and debugging.
-*   Project files can also be in JSON/CSON/YAML for integration into IDEs
+* gulp filters (node streams)
+* autowatch (-w flag)
+* display errors and continue when watching
+* build modes for test, release ...
+* efficient rebuild when watching
+* imperative or declaractive (JSON) project scripts
+* serve files locally with http(s)
 
 JSON format is supported and will be documented with Projmate GUI.
-
 
 ## Install
 
