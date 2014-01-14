@@ -410,41 +410,30 @@ class Task
       @changeset = []
       changeset
 
+
   _executePipeline: (pipeline, mode=@mode) ->
     throw new Error("pipeline is not a function") unless _.isFunction(pipeline)
-    vow = Promise.pending()
-    log = @log
-    last = null
-    filters = _.compact(pipeline(mode))
     that = @
-    rejected = false
+    log = @log
 
+    new Promise (resolve, reject) ->
+      last = null
+      filters = _.compact(pipeline(mode))
 
-    if filters.length > 0
-      start = Gulp.src(that.sources())
-      start.on "error", (err) ->
-        rejected = true
-        console.error err
-        vow.reject err
+      if filters.length > 0
+        start = Gulp.src(that.sources())
+        start.on "error", reject
 
-      filters.reduce (previous, filter) ->
-        filter.on "error", (err) ->
-          rejected = true
-          console.error err
-          vow.reject err
+        filters.reduce (previous, filter) ->
+          filter.on "error", reject
+          previous.pipe filter
+          last = filter
+        , start
 
-        previous.pipe filter
-        last = filter
-      , start
-
-      last.on "end", ->
-        if !rejected
-          vow.fulfill()
-    else
-      log.info "no filters to run in #{mode}"
-      vow.fulfill()
-
-    vow.promise
+        last.on "end", resolve
+      else
+        log.info "no filters to run in #{mode}"
+        resolve()
 
 
   ###
@@ -482,6 +471,9 @@ class Task
           ms = (Date.now() - startTime)
           log.info if that.rebuild is "all" then "rebuilt all #{ms} ms" else "rebuilt #{filename} #{ms} ms"
         promise.catch (err) ->
+          console.error err.stack if err.stack
+          console.error '\n'
+          console.error err.message if err.message
           # do nothing with it, error was printed in executePipeline
         # promise.catch (err) ->
         #   log.error if err.stack then err.stack else err
