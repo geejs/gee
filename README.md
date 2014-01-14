@@ -13,7 +13,7 @@ Lots of build systems out there. Grunt, Gulp ... too low level. What you get
 * build modes for test, release ...
 * efficient rebuild when watching
 * imperative or declaractive (JSON) project scripts
-* serve files locally with http(s)
+* serve files locally with http/https
 
 JSON format is supported and will be documented with Projmate GUI.
 

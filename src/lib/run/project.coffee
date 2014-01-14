@@ -11,6 +11,7 @@ Promise = require("bluebird")
 Str = require("underscore.string")
 $ = require("gee-shell")
 tap = require("gulp-tap")
+strtap = require("../common/strtap")
 
 FILTERS = "filters"
 FUNCTIONS = "functions"
@@ -35,6 +36,7 @@ class Project
       $: $
       argv: argv
       tap: tap
+      strtap: strtap
 
     @filters = {}
     @loadFilters()

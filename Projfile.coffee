@@ -7,8 +7,6 @@ uglify = require("gulp-uglify")
 Fs = require("fs")
 $ = require("gee-shell")
 
-
-
 exports.project = (gee) ->
   {argv, tap} = gee
 
@@ -21,7 +19,7 @@ exports.project = (gee) ->
 
   scripts:
     src:  'src/**/*.{coffee,js}'
-    pipeline: -> [
+    __: -> [
       tap (file, t) ->
         t.through(coffee, []) if Path.extname(file.path) == '.coffee'
       dest 'dist'

@@ -8,11 +8,13 @@ var $ = require('gee-shell');
 exports.project = function(gee) {
   var argv = gee.argv;
   var tap = gee.tap;
+  var strtap = gee.strtap;
 
   function addHeader() {
-    return tap(function(file) {
+    return strtap(function(file) {
       var header = '/*** YOUR HEADER */';
-      file.contents = Buffer.concat([new Buffer(header), file.contents]);
+      file.contents = header + '\n' + file.contents;
+      return true;
     });
   };
 
@@ -36,7 +38,7 @@ exports.project = function(gee) {
 
     scripts: {
       src: 'src/**/*.{coffee,js}',
-      pipeline: function() {
+      pipe: function() {
         return [ifCoffee(), dest('build')];
       },
       release: function() {

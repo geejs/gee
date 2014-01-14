@@ -17,7 +17,7 @@ aliasTaskProps =
   dependencies: ["dep", "deps"]
   files: ["src"]
   command: ["cmd"]
-  pipeline: ["line"]
+  pipeline: ["pipe"]
   options: ["opts"]
 
 class Task
@@ -520,7 +520,6 @@ class Task
     if _.isPlainObject(definition)# and !_.isArray(definition)
       for k, v of definition
         continue if reserved.indexOf(k) > -1
-        k
         # eg release task
         # create release task by cloning it
         newdef = _.clone(definition)
@@ -531,7 +530,7 @@ class Task
         # delete other commands but track which one it is
         # to replace it
         which = ""
-        for action in ["pipeline", "cmd", "command"]
+        for action in ["pipe", "pipeline", "cmd", "command"]
           if newdef[action]?
             which = action
             delete newdef[action]

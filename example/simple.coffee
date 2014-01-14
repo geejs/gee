@@ -6,20 +6,18 @@ uglify = require("gulp-uglify")
 $ = require("gee-shell")
 
 exports.project = (gee) ->
-  {argv, tap} = gee
+  {argv, tap, strtap} = gee
 
-  # tap into pipeline easily
+  # tap into string data easily, return true to update
   addHeader = ->
-    return tap (file) ->
+    strtap (asset) ->
       header = "/*** YOUR HEADER */"
-      file.contents = Buffer.concat([
-        new Buffer(header)
-        file.contents
-      ])
+      asset.contents = header + '\n' + asset.contents
+      true
 
   # process coffee files only if file has extension .coffee
-  ifCoffee = ->
-    return tap (file, t) ->
+  cafe = ->
+    tap (file, t) ->
       t.through(coffee, []) if Path.extname(file.path) == '.coffee'
 
   default: "clean async asyncPromise scripts"
@@ -29,9 +27,9 @@ exports.project = (gee) ->
 
   scripts:
     src:  'src/**/*.{coffee,js}'
-    pipeline: -> [ifCoffee(), dest 'build']
+    pipe: -> [cafe(), dest('build')]
 
-    release: -> [ifCoffee(), uglify(), addHeader(), dest('dist')]
+    release: -> [cafe(), uglify(), addHeader(), dest('dist')]
 
   helloArguments: ->
     console.log "Hello #{argv.message}"
