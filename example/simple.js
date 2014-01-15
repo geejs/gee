@@ -10,8 +10,9 @@ exports.project = function(gee) {
   var tap = gee.tap;
   var strtap = gee.strtap;
 
+
+  // use strtap to change a file using strings, return true to update
   function addHeader() {
-    /* use strtap to change a file using strings, return true to update */
     return strtap(function(file) {
       var header = '/*** YOUR HEADER */';
       file.contents = header + '\n' + file.contents;
@@ -19,12 +20,15 @@ exports.project = function(gee) {
     });
   };
 
-  function ifCoffee() {
+
+  // process coffee files only if file has extension .coffee
+  function cafe() {
     return tap(function(file, t) {
       if (Path.extname(file.path) === '.coffee')
         return t.through(coffee, []);
     });
   };
+
 
   return {
     'default': 'clean async asyncPromise scripts',
@@ -40,10 +44,10 @@ exports.project = function(gee) {
     scripts: {
       src: 'src/**/*.{coffee,js}',
       pipe: function() {
-        return [ifCoffee(), dest('build')];
+        return [cafe(), dest('build')];
       },
       release: function() {
-        return [ifCoffee(), uglify(), addHeader(), dest('dist')];
+        return [cafe(), uglify(), addHeader(), dest('dist')];
       }
     },
 

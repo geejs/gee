@@ -8,7 +8,7 @@ $ = require("gee-shell")
 exports.project = (gee) ->
   {argv, tap, strtap} = gee
 
-  # tap into string data easily, return true to update
+  # use strtap to change a file using strings, return true to update
   addHeader = ->
     strtap (asset) ->
       header = "/*** YOUR HEADER */"
@@ -26,9 +26,8 @@ exports.project = (gee) ->
     $.rm '-rf', 'dist'
 
   scripts:
-    src:  'src/**/*.{coffee,js}'
+    src: 'src/**/*.{coffee,js}'
     pipe: -> [cafe(), dest('build')]
-
     release: -> [cafe(), uglify(), addHeader(), dest('dist')]
 
   helloArguments: ->

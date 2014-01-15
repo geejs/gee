@@ -1,18 +1,13 @@
 ES = require('event-stream')
-baseStream = require('stream')
-DEBUG = process.env.NODE_ENV is 'development'
-Promise = require('bluebird')
-
 
 ###
-# Taps into the pipeline and allows user to easily route data through
-# another stream or change content.
+# Taps into the pipeline and allows user to easily change file
+# contents or path using strings.
 ###
 module.exports = (lambda) ->
 
   modifyFile = (file) ->
     that = @
-
     asset = {path: file.path, contents: file.contents.toString()}
 
     cb = (err, update) ->
